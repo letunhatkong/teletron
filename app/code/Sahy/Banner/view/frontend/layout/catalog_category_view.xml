@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+     <body>
+               
+        <!--<referenceContainer name="sidebar.main">-->
+            <!--<block after="-" class="Sahy\Banner\Block\Frontend\Banners"-->
+                <!--name="images.categoryleft"-->
+                <!--template="Sahy_Banner::category-left.phtml" /> -->
+        <!--</referenceContainer>            -->
+        <!--<referenceContainer name="content">-->
+            <!--<block before="-" class="Sahy\Banner\Block\Frontend\Banners"-->
+                <!--name="images.categorytop"-->
+                <!--template="Sahy_Banner::category-top.phtml" /> -->
+        <!--</referenceContainer>     -->
+        <!--<referenceContainer name="content">-->
+            <!--<block after="-" class="Sahy\Banner\Block\Frontend\Banners"-->
+                <!--name="images.categorybottom"-->
+                <!--template="Sahy_Banner::category-bottom.phtml" /> -->
+        <!--</referenceContainer>       -->
+    </body>
+</page>

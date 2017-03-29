@@ -1,0 +1,10 @@
+<?php 
+   $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+   $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+?>
+<div class="page-title-wrapper 1">
+    <h1 class="page-title" id="page-title-heading" aria-labelledby="page-title-heading toolbar-amount">
+    	<span class="base" data-ui-id="page-title-wrapper"><?= $category->getName(); ?></span>    
+    </h1>
+</div>
+

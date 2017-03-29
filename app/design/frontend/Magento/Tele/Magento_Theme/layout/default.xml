@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+    	<!-- Header -->
+        <referenceBlock name="header.panel">
+            <block class="Magento\Theme\Block\Html\Header\Logo" name="logo">
+                    <arguments>
+                        <argument name="logo_img_width" xsi:type="number">189</argument>
+                        <argument name="logo_img_height" xsi:type="number">64</argument>
+                    </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceBlock name="header-wrapper">
+            <container name="menu.search.container" htmlTag="div" htmlId="menu-search-container" />
+        </referenceBlock>
+        <!-- <move element="catalog.topnav" destination="menu.search.container" after before="-"/> -->
+        <move  element="page.main.title" destination="header-wrapper" after="-" />
+        <move element="top.search" destination="menu.search.container" before="-"/>
+        <referenceBlock name="advanced-search-link" remove="true"/>
+        <move element="minicart" destination="header.panel" before="-"/>
+
+        <!-- <block class="Magento\Framework\View\Element\Template" name="home.top" template="Magento_Theme::html/hometop.phtml"/> -->
+
+        <referenceContainer name="header.container"> 
+            <container name="new_container" htmlClass="container_css_class" htmlTag="div">
+                <block class="Magento\Framework\View\Element\Template" template="Magento_Theme::html/hometop.phtml" name="block_name" before="-"  />
+            </container>
+        </referenceContainer>
+        <move element="block_name" destination="header.container" before="-"/>
+        <!-- Message -->
+        <referenceContainer name="page.messages" htmlTag="div" htmlClass="page messages container" />
+        <!-- home -->
+        <block class="Magento\Framework\View\Element\Template" name="home.page" template="Magento_Theme::html/homepage.phtml"/>
+        
+        <move element="home.banner" destination="columns.top" />
+         <!-- Remove Footer -->
+        <referenceContainer name="footer" remove="true"></referenceContainer>
+       	<move element="copyright" destination="before.body.end"/>
+
+        <!-- JS -->
+        <block class="Magento\Framework\View\Element\Text" name="bootstrap">
+            <arguments>
+                <argument name="text" xsi:type="string">
+                    <![CDATA[<script type="text/javascript" src="/pub/js/bootstrap.min.js"></script>]]></argument>
+            
+            </arguments>
+        </block>
+        <move element="bootstrap" destination="before.body.end"/>
+    </body>
+</page>

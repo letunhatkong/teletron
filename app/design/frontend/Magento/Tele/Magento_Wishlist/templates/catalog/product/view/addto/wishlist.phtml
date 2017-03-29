@@ -1,0 +1,30 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Wishlist\Block\Catalog\Product\View\Addto\Wishlist */
+?>
+<?php
+    $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface'); 
+    $currentStore = $storeManager->getStore();
+    $baseUrl = $currentStore->getBaseUrl();
+    $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+?>
+<?php if ($block->isWishListAllowed()) : ?>
+    <a href="#"
+       class="action towishlist"
+       data-post='<?php /* @escapeNotVerified */ echo $block->getWishlistParams(); ?>'
+       data-action="add-to-wishlist"><img src="<?= $mediaUrl."images/icon/heart.png"; ?>" alt=""><span><?php /* @escapeNotVerified */ echo __('Wishlist') ?></span></a>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "addToWishlist": <?php /* @escapeNotVerified */ echo $block->getWishlistOptionsJson() ?>
+        }
+    }
+</script>

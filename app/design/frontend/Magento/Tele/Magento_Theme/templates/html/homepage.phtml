@@ -1,0 +1,335 @@
+<?php
+    $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
+    $currentStore = $storeManager->getStore();
+    $baseUrl = $currentStore->getBaseUrl();
+    $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+    $linkUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_LINK);
+
+    $sa = $_objectManager->get('Sahy\Banner\Block\Frontend\Banners');
+    $_sub1 = $sa->getAllBannerByType($sa::TYPE_SUB_BANNER1);
+    $_sub2 = $sa->getAllBannerByType($sa::TYPE_SUB_BANNER2);
+?>
+<div class="row">
+<?php if (isset($_sub1) && count($_sub1) > 0) { ?>
+    <?php $size = count($_sub1); ?>
+    <div id="bannerHS" class="carousel slide" data-ride="carousel">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <?php $i =1; ?>
+            <?php foreach($_sub1 as $bn) { ?>
+                <div class="item <?= ($i == 1) ? 'active':'' ?>">
+                    <img src="<?= $mediaUrl . $bn['image']?>" />
+                    <div class="innerHS">
+                        <?php if ($bn['link'] != '') { ?>
+                            <a href="<?=$bn['link']?>" class="clickHereHS" target="_blank"><?= $bn['details'] ?></a>
+                        <?php } ?>
+                    </div>
+                </div>
+                <?php $i++; ?>
+            <?php } ?>
+        </div>
+        <!-- Controls -->
+        <a href="#bannerHS" role="button" data-slide="prev">
+            <div class="prevButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+        </a>
+        <a href="#bannerHS" role="button" data-slide="next">
+            <div class="nextButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+        </a>
+
+        <!-- Indicators -->
+        <ol class="carousel-indicators hidden">
+            <?php $i =0 ?>
+            <?php foreach($_sub1 as $bn) { ?>
+                <li data-target="#bannerHS" data-slide-to="<?= $i ?>" class="<?= ($i == 0) ? 'active':'' ?>"></li>
+                <?php $i++; ?>
+            <?php } ?>
+        </ol>
+    </div>
+    <div class="clearfix pad40"></div>
+<?php } ?>
+</div>
+<?php 
+    $categoryFactory = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Category\CollectionFactory');
+    $topsunCategory = $categoryFactory->create()
+    ->addAttributeToFilter('url_key','luxury-furnishing-packages')
+    ->addAttributeToSelect('*')
+    ->getFirstItem();
+    // /Magento\Catalog\Model\Category
+  
+    $subcats1 = $topsunCategory->getChildrenCategories();
+?>
+<div class="container-fuld">
+    <div id="pr-product">
+        <p class="text-first">LUXURY FURNITURE PACKAGES</strong></p>
+        <p class="text-second">Home Design Services</p>
+        <hr style="width: 90px; border-top: 3px solid #EAE3E3; margin: auto;">
+        <div class="row cols" id="section-pr">
+            <?php  foreach ($subcats1 as $subcat) {  ?>
+            <div class="item subcat-category">
+                <a href="<?= $subcat->getUrl();?>" title="" class="link-sub">
+                    <img src="<?= $subcat->getImageUrl(); ?>" alt="">
+                </a>
+                <div class="box-text-sub">        
+                    <span class="subcat-title">
+                        <a href="<?= $subcat->getUrl();?>" title=""><?= $subcat->getName(); ?></a>
+                        <a href="<?= $subcat->getUrl();?>" title="" class="read-more">Read More</a>
+                    </span>
+                </div>
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+<div id="new-product">
+    <p class="text-first">NEW PRODUCTS</p>
+    <hr class="lane-decoration">
+    <div class="row" id="section-new">
+<?php 
+    $productCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+    $collection = $productCollection->create()
+        ->addAttributeToSelect('*')
+        ->addFieldToFilter("status", "1")
+        ->addFieldToFilter("type_id", array('neq' => 'virtual'))
+        ->setOrder('created_at', 'DESC')
+        ->setPageSize(8) // Limit product
+        ->load();
+    foreach ($collection as $product){ ?>
+
+        <div class="col-md-3 custom-resize">
+            <a href="<?= $product->getProductUrl()?>">
+                <img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>">
+            </a>
+            <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
+            <?php $specialPrice = $product->getSpecialPrice(); 
+                if(!is_null($specialPrice)){?>
+                    <span class="price-single"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
+                    <span class="special_price"><a href="<?= $product->getProductUrl()?>"><?= "$".number_format($product->getSpecialPrice(), 2);?></a></span>
+                <?php }
+                else{ ?>
+                    <span class="single-price"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
+            <?php } ?>
+        </div>   
+
+    <?php } ?>
+   </div> 
+</div>
+<div id="special-product">
+    <div class="top-best">
+        <div class="div-box">
+            <span class="text-top change-color">TOP</span>
+        </div>
+        <div class="div-box">
+            <span class="text-best">BEST</span>
+        </div>
+    </div>
+    <?php
+    $topproductCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+    $topCate = $topproductCollection->create()
+        ->addAttributeToSelect('*')
+        ->addFieldToFilter("status", "1")
+        ->addFieldToFilter("top_product", "1")
+        ->addFieldToFilter("type_id", array('neq' => 'virtual'))
+        ->setOrder('created_at', 'DESC')
+        ->setPageSize(4) // Limit product
+        ->load();
+    ?>
+    <?php
+    $bestproductCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+    $bestCate = $bestproductCollection->create()
+        ->addAttributeToSelect('*')
+        ->addFieldToFilter("status", "1")
+        ->addFieldToFilter("best_product", "1")
+        ->addFieldToFilter("type_id", array('neq' => 'virtual'))
+        ->setOrder('created_at', 'DESC')
+        ->setPageSize(4) // Limit product
+        ->load();
+    ?>
+
+    <div class="row section-top open">
+        <?php  foreach ($topCate as $product){ ?>
+        <div class="col-md-3 custom-resize">
+        <div class="box-img">
+            <a href="<?= $product->getProductUrl()?>">
+                <img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>">
+            </a>
+        </div>
+            <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
+            <?php $specialPrice = $product->getSpecialPrice(); 
+                if(!is_null($specialPrice)){?>
+                    <span class="price-single"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
+                    <span class="special_price"><a href="<?= $product->getProductUrl()?>"><?= "$".number_format($product->getSpecialPrice(), 2);?></a></span>
+                <?php }
+                else{ ?>
+                    <span class="single-price"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
+            <?php } ?>
+        </div>
+       <?php } ?>
+    </div>
+    <div class="row section-best">
+        <?php  foreach ($bestCate as $product){ ?>
+            <div class="col-md-3 custom-resize">
+                <a href="<?= $product->getProductUrl()?>"><img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>"></a>
+                <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
+                <?php $specialPrice = $product->getSpecialPrice(); 
+                if(!is_null($specialPrice)){?>
+                    <span class="price-single"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
+                    <span class="special_price"><a href="<?= $product->getProductUrl()?>"><?= "$".number_format($product->getSpecialPrice(), 2);?></a></span>
+                <?php }
+                else{ ?>
+                    <span class="single-price"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
+            <?php } ?>
+            </div>
+        <?php } ?>
+    </div> 
+</div>
+<div id="section-sale">
+    <p class="text-first">SALE</p>
+    <hr class="lane-decoration">
+</div>
+<?php if (isset($_sub2) && count($_sub2) > 0) { ?>
+    <?php $size = count($_sub2); ?>
+    <div class="clearfix"></div>
+    <div id="bannerHS" class="carousel slide" data-ride="carousel">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <?php $i =1; ?>
+            <?php foreach($_sub2 as $bn) { ?>
+                <div class="item <?= ($i == 1) ? 'active':'' ?>">
+                    <img src="<?= $mediaUrl . $bn['image']?>" />
+                </div>
+                <?php $i++; ?>
+            <?php } ?>
+        </div>
+        <!-- Controls -->
+        <a href="#bannerHS" role="button" data-slide="prev">
+            <div class="prevButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+        </a>
+        <a href="#bannerHS" role="button" data-slide="next">
+            <div class="nextButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+        </a>
+        <!-- Indicators -->
+        <ol class="carousel-indicators hidden">
+            <?php $i =0 ?>
+            <?php foreach($_sub2 as $bn) { ?>
+                <li data-target="#bannerHS" data-slide-to="<?= $i ?>" class="<?= ($i == 0) ? 'active':'' ?>"></li>
+                <?php $i++; ?>
+            <?php } ?>
+        </ol>
+    </div>
+    <div class="clearfix pad40"></div>
+<?php } ?>
+<?php
+    $koreanCat = $_objectManager->create('Magefan\Blog\Model\Category')->load('korean');
+    $korean = $_objectManager->create('Magefan\Blog\Model\ResourceModel\Post\Collection')
+        ->addActiveFilter()->addCategoryFilter($koreanCat)->setOrder('creation_time', 'DESC')->setPageSize(1);
+
+    $chineseCat = $_objectManager->create('Magefan\Blog\Model\Category')->load('chinese');
+    $chinese = $_objectManager->create('Magefan\Blog\Model\ResourceModel\Post\Collection')
+        ->addActiveFilter()->addCategoryFilter($chineseCat)->setOrder('creation_time', 'DESC')->setPageSize(1);
+
+    $vietnamCat = $_objectManager->create('Magefan\Blog\Model\Category')->load('vietnamese');
+    $vietnam = $_objectManager->create('Magefan\Blog\Model\ResourceModel\Post\Collection')
+        ->addActiveFilter()->addCategoryFilter($vietnamCat)->setOrder('creation_time', 'DESC')->setPageSize(1);
+?>
+    <div id="promotion-product">
+        <p class="text-first">NEW & PROMOTIONS</strong></p>
+        <hr class="lane-decoration">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 style-padding">
+                <div class="demo-3" id ="box-one"> 
+                    <a href="<?= $baseUrl.'blog/category/korean'?>" title="">
+                    <div class="box-1">
+                    <?php foreach ($korean as $proItem) { ?>
+                        <img src="<?= $proItem->getFeaturedImage() ?>" style="width:100%; height: 380px;">
+                    <?php } ?>
+                        <div class="details"></div>
+                        <span class="category-content"><?= $koreanCat->getContent() ?></span>
+                        <h3><?= $koreanCat->getTitle() ?></h3> 
+                     </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 style-padding">
+                <div class="demo-3" id ="box-two"> 
+                    <a href="<?= $baseUrl.'blog/category/chinese'?>" title="">
+                    <?php foreach ($chinese as $proItem) { ?>
+                        <img src="<?= $proItem->getFeaturedImage() ?>" style="width:100%; height: 380px;">
+                    <?php } ?>
+                        <div class="details"></div>
+                        <span class="category-content"><?= $chineseCat->getContent() ?></span>
+                        <h3><?= $chineseCat->getTitle() ?></h3> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 style-padding">
+                <div class="demo-3" id ="box-three"> 
+                    <a href="<?= $baseUrl.'blog/category/vietnamese'?>" title="">
+                        <?php foreach ($vietnam as $proItem) { ?>
+                            <img src="<?= $proItem->getFeaturedImage() ?>" style="width:100%; height: 380px; ">
+                        <?php } ?>
+                        <div class="details"></div>
+                        <span class="category-content"><?= $vietnamCat->getContent() ?></span>
+                        <h3><?= $vietnamCat->getTitle() ?></h3>  
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    require([ 'jquery', 'jquery/ui'], function($){ 
+        $(document).ready(function($) {
+            $('#special-product .text-top').click(function () {
+                $('.section-best').removeClass('open');
+                $('.section-top').addClass("open");
+                $('.text-top').addClass("change-color");
+                $('.text-best').removeClass('change-color');
+            });
+            $('#special-product .text-best').click(function () {
+                $('.section-top').removeClass('open');
+                $('.section-best').addClass("open");
+                $('.text-best').addClass('change-color');
+                $('.text-top').removeClass('change-color');
+            });
+            // jquery ads
+            jQuery("#box-one").mouseover(function(){
+                // jQuery("#box-one .details").css("height", "100%");
+                // jQuery("#box-one  h3").css("padding-top", "20%");
+                // jQuery("#box-one  h3").css("top", "0%");
+            });
+             jQuery("#box-one").mouseout(function(){
+                // jQuery("#box-one .details").css("height", "30%");
+                // jQuery("#box-one  h3").css("padding-top", "0%");
+                // jQuery("#box-one  h3").css("top", "75%");
+            });
+
+
+             jQuery("#box-two").mouseover(function(){
+                // jQuery("#box-two .details").css("height", "100%");
+                // jQuery("#box-two h3").css("padding-top", "20%");
+                // jQuery("#box-two h3").css("top", "0");
+            });
+             jQuery("#box-two").mouseout(function(){
+                // jQuery("#box-two .details").css("height", "30%");
+                // jQuery("#box-two h3").css("padding-top", "0%");
+                // jQuery("#box-two h3").css("top", "75%");
+
+            });
+
+
+             jQuery("#box-three").mouseover(function(){
+                // jQuery("#box-three .details").css("height", "100%");
+                // jQuery("#box-three  h3").css("padding-top", "20%");
+                // jQuery("#box-three  h3").css("top", "0%");
+            });
+             jQuery("#box-three").mouseout(function(){
+                // jQuery("#box-three .details").css("height", "30%");
+                // jQuery("#box-three  h3").css("padding-top", "0%");
+                // jQuery("#box-three  h3").css("top", "75%");
+            });
+        }); 
+    });
+</script>
+
+

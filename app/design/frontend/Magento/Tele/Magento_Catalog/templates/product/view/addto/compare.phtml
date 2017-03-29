@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Catalog\Product\View\Addto\Compare */
+?>
+<?php
+    $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface'); 
+    $currentStore = $storeManager->getStore();
+    $baseUrl = $currentStore->getBaseUrl();
+    $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+?>
+<a href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getPostDataParams();?>'
+        data-role="add-to-links"
+        class="action tocompare"><img src="<?= $mediaUrl."images/icon/teath.png"; ?>" alt=""><span><?php /* @escapeNotVerified */ echo __('Compare') ?></span></a>

@@ -1,0 +1,44 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.My Account
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Customer\Block\Account\AuthorizationLink */
+
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance(); //instance of\Magento\Framework\App\ObjectManager
+$storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface'); 
+$currentStore = $storeManager->getStore();
+$baseUrl = $currentStore->getBaseUrl();
+$mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+
+
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+<li class="authorization-link" data-label="<?php echo $block->escapeHtml(__('or')); ?>">
+    <a <?php /* @escapeNotVerified */ echo $block->getLinkAttributes(); ?><?php /* @escapeNotVerified */ echo $dataPostParam; ?>>
+    <img src="<?= $mediaUrl."images/mobile/user.png"; ?>" alt="">
+        <?php echo $block->escapeHtml($block->getLabel()); ?>
+    </a>
+</li>
+<li class="lane-top">|</li>
+<li class="global">
+	<a href="" title="">
+		<img src="<?= $mediaUrl."images/mobile/earth.png"; ?>" alt="">
+	</a>
+</li>
+<div class="store-location-phone">
+	<ul>
+		<li class="link-store-location"><a href="<?= $baseUrl?>store-locator.html" title=""><img src="<?= $mediaUrl."images/mobile/map.png"; ?>" alt="Store Location"> Store Location</a></li>
+		<li class="lane-bottom">l</li>
+		<li class="phone-top">Customer Care:  1.855.988.6999
+        </li>
+	</ul>
+</div>
+
+

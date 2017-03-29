@@ -1,0 +1,76 @@
+<?php
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+
+<?php if ($_product->isSaleable()): ?>
+    <div class="box-tocart">
+        <div class="fieldset">
+            <?php if ($block->shouldRenderQuantity()): ?>
+                <div class="field qty">
+                    <label class="label" for="qty"><span><?= __('Qty') ?></span></label>
+                    <div class="control">
+                        <input type="number" name="qty" id="qty" maxlength="12"
+                               value="<?= $block->getProductDefaultQty() * 1 ?>"
+                               title="<?= __('Qty') ?>" class="input-text qty"
+                               data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                        />
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="actions">
+                <button type="submit" title="<?= $buttonTitle ?>" class="action primary tocart"
+                        id="product-addtocart-button">
+                    <span><?= $buttonTitle ?></span>
+                </button>
+                <?= $block->getChildHtml('', true) ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php if ($block->isRedirectToCartEnabled()) : ?>
+    <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/product/view/validation": {
+                "radioCheckboxClosest": ".nested"
+            }
+        }
+    }
+    </script>
+<?php else : ?>
+    <script type="text/javascript">
+        require(['jquery',
+                'mage/mage',
+                'Magento_Catalog/product/view/validation',
+                'Magento_Catalog/js/catalog-add-to-cart'],
+            function ($) {
+                'use strict';
+
+                $('#product_addtocart_form').mage('validation', {
+                    radioCheckboxClosest: '.nested',
+                    submitHandler: function (form) {
+                        var areaVal = $('#areaInputId').val();
+
+                        if (isNaN(areaVal) || areaVal > 0) {
+                            var widget = $(form).catalogAddToCart({
+                                bindSubmit: false
+                            });
+                            widget.catalogAddToCart('submitForm', $(form));
+                        }
+                        else {
+                            alert("Error! Please check width value or Height value.");
+                        }
+
+                        return false;
+                    }
+                });
+            });
+    </script>
+<?php endif; ?>
+
+
+
+<div class="clearfix pad20"></div>

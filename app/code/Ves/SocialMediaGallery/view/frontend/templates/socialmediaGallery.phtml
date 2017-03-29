@@ -1,0 +1,32 @@
+<?php
+    function fetchData($url){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
+    }
+    $result = fetchData("https://api.instagram.com/v1/users/1283635372/media/recent?access_token=1283635372.1677ed0.5bf79b6b394e45ca810bc2c190f517ca");
+    //echo $result;
+    $result = json_decode($result);
+    ?>
+     
+<div id ="social-media-gallary">
+	<div class="row">
+		<?php foreach ($result->data as $post) { ?>
+		<div class="col-md-3 col-sm-12 col-xs-12 padding-box-social">
+			<a class="instagram-unit" target="blank" href="<?= $post->link ?>">
+				<img src="<?= $post->images->standard_resolution->url ?>"/>
+				<div class="social-media-title">
+					<div class="box-text-m"></div>
+					<span><?= $post->caption->text ?> <br><?= $post->likes->count ?> like <br><?= date("F j, Y", $post->caption->created_time) ?></span>
+				</div>
+			</a>
+		</div>
+		 <?php } ?>
+ 	</div>
+</div>
+
+      

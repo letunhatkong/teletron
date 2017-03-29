@@ -1,0 +1,45 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * New Customer block template
+ *
+ * @var $block \Magento\Customer\Block\Form\Login\Info
+ */
+?>
+<?php
+    $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface'); 
+    $currentStore = $storeManager->getStore();
+    $baseUrl = $currentStore->getBaseUrl();
+    $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+?>
+<?php if ($block->getRegistration()->isAllowed()): ?>
+<div class="block block-new-customer">
+    <div class="block-title">
+        <strong id="block-new-customer-heading" role="heading" aria-level="2"><?php /* @escapeNotVerified */ echo __('New Customers') ?></strong>
+        <hr style="width: 15%;border-top: 4px solid #E8E3E3;">
+    </div>
+    <div class="block-content" aria-labelledby="block-new-customer-heading">
+    <p>
+        <img src="<?= $mediaUrl.'images/icon/left.png' ?>" alt="">
+    </p>
+        <p class="conten-text"><?php /* @escapeNotVerified */ echo __('By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.') ?></p>
+         <p>
+        <img src="<?= $mediaUrl.'images/icon/right.png' ?>" alt="" id="sign-img">
+    </p>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <a href="<?php /* @escapeNotVerified */ echo $block->getCreateAccountUrl() ?>" class="action create primary"><span><?php /* @escapeNotVerified */ echo __('CREATE AN ACCOUNT') ?></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

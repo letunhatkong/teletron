@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <referenceBlock class="Magento\Catalog\Block\Product\ListProduct" name="category.products.list" as="product_list">
+                <action method="setDefaultDirection">
+                    <argument name="dir" xsi:type="string">desc</argument>
+                </action>
+            </referenceBlock>
+        </referenceContainer>
+
+        <move  element="page.main.title" destination="header-wrapper" before="-" />
+        <block class="Magento\Framework\View\Element\Template" name="home.banner" template="Magento_Theme::html/homebanner.phtml"/>
+        <block class="Magento\Framework\View\Element\Template" name="category.menu" template="Magento_Theme::html/product-menu.phtml"/>
+        <move element="category.menu" before="-" destination="div.sidebar.main"/>
+
+        <move element="category.view.container" before="-" destination="main"/>
+
+
+    </body>
+</page>

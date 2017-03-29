@@ -1,0 +1,186 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+    $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
+    $currentStore = $storeManager->getStore();
+    $baseUrl = $currentStore->getBaseUrl();
+    $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+?>
+<div id="footer-default" isMobile-data="-1">
+    <div class="col-1150">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3  customer-care">
+                <a href="javascript:void(0);" class="click-ft-item" check-data="0">INFORMATIN</a>
+                <ul class="footer links ft-sub-item">
+                    <li class="nav item"><a href="<?= $baseUrl.'about-us'; ?>">About Us</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'shipping'; ?>">Shipping Options</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'cancellations-returns'; ?>">Cancellations And Returns</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'terms-and-conditions'; ?>">Terms and Conditions</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'privacy-policy'; ?>">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-3 customer-care">
+                <a href="javascript:void(0);" class="click-ft-item" check-data="0">CONTACT</a>
+                <ul class="footer links ft-sub-item">
+                    <li class="nav item"><a href="<?= $baseUrl.'contact'; ?>">Contact Us</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'store-locator.html'; ?>">Store Locator</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'blog'; ?>">News and Promotions</a></li>
+                    <li class="nav item"><a href="#">Social Media Gallery</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-3 customer-care" id="newletterFooter">
+                <a href="javascript:void(0);" class="click-ft-item" check-data="0">MY ACCOUNT</a>
+                <ul class="footer links ft-sub-item">
+                    <li class="nav item"><a href="<?= $baseUrl.'customer/account/login/'; ?>">Sign In</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'checkout/cart'; ?>">View Cart</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'Wishlist'; ?>">My Wishlist</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl.'checkout'; ?>">Check Out</a></li>
+                    <li class="nav item"><a href="#">Track my order</a></li>
+                </ul>
+            </div>
+
+            <div class="col-xs-12 col-sm-3 customer-care">
+                <a href="javascript:void(0);" class="click-ft-item" check-data="0">FOLLOW US</a>
+                <ul class="footer links ft-sub-item" id="socia-list">
+                    <li class="icon-twit">
+                        <a href="#/ve-chung-toi.html">
+                            <img src="<?= $mediaUrl."images/footer/google.png"; ?>" class="title-socia title-socia-hiden"/>
+                            <img src="<?= $mediaUrl."images/footer/google.png"; ?>" class="twitter-mb hidden-dt"/>
+                        </a>
+                    </li>
+                    <li class="icon-twit">
+                        <a href="#/ve-chung-toi.html">
+                            <img src="<?= $mediaUrl."images/footer/facebook.png"; ?>" class="title-socia title-socia-hiden"/>
+                            <img src="<?= $mediaUrl."images/footer/facebook.png"; ?>" class="twitter-mb hidden-dt"/>
+                        </a>
+                    </li>
+                    <li class="icon-twit">
+                        <a href="#/ve-chung-toi.html">
+                            <img src="<?= $mediaUrl."images/footer/twi.png"; ?>" class="title-socia title-socia-hiden"/>
+                            <img src="<?= $mediaUrl."images/footer/twi.png"; ?>" class="twitter-mb hidden-dt"/>
+                        </a>
+                    </li>
+                    <li class="icon-twit">
+                        <a href="#/ve-chung-toi.html">
+                            <img src="<?= $mediaUrl."images/footer/wifi.png"; ?>" class="title-socia title-socia-hiden"/>
+                            <img src="<?= $mediaUrl."images/footer/wifi.png"; ?>" class="twitter-mb hidden-dt"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>  
+        </div>
+    </div>
+</div>
+<small class="copyright" id="copyright-cus">
+    <span><?php /* @escapeNotVerified */ echo $block->getCopyright() ?></span>
+</small>
+<script type="text/javascript">
+    require([ 'jquery', 'jquery/ui'], function($){ 
+        $(document).ready(function($) {
+            var $window = $(window);
+            function checkWidth() {
+                var windowsize = $window.width();               
+                var isMobile = (windowsize < 768) ? 1 : 0;
+                var currentDevice =  $("#footer-default").attr("isMobile-data");
+                if (currentDevice == "1") {
+                    if (!isMobile) resetFooterSm();
+                } else {
+                    (isMobile) ? resetFooterXs(): resetFooterSm();
+                }   
+                $("#footer-default").attr("isMobile-data", isMobile);               
+            }
+            // Reset status begin mobile
+            function resetFooterXs() {
+                $(".ft-sub-item").css("display", "none");
+                $('.click-ft-item').attr("check-data", "0");
+            }
+             // Reset status begin  # Mobile
+            function resetFooterSm() {
+                $(".ft-sub-item").css("display", "block");
+                $('.click-ft-item').attr("check-data", "0");
+            }
+            // Check width begin first time
+            checkWidth();
+            $(window).resize(checkWidth);
+            $('.click-ft-item').click(function(){  
+                var curWidth = $window.width(); 
+                if (curWidth < 768) {
+                    var check = $(this).attr("check-data");
+                    $(".ft-sub-item").css("display", "none");
+                    if (check == "0") { 
+                        $(this).parent().find('.ft-sub-item').css("display", "block");
+                        $(this).attr("check-data", "1");
+                    } else {
+                        $(this).attr("check-data", "0");
+                    }
+                }
+            });
+        }); 
+    });
+</script>
+
+<div id="category-mobile">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-left">
+                <div class="box-category-m">
+                    <a href="#" title="">
+                        <img src="<?= $mediaUrl."images/mobile/new.png"; ?>" alt="">
+                        <div class="box-text-m"></div>
+                        <p>NEW PRODUCT</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-right">
+                <div class="box-category-m">
+                    <a href="#" title="">
+                        <img src="<?= $mediaUrl."images/mobile/top.png"; ?>" alt="">
+                        <div class="box-text-m"></div>
+                        <p>TOP</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-left">
+                <div class="box-category-m">
+                    <a href="#" title="">
+                        <img src="<?= $mediaUrl."images/mobile/best.png"; ?>" alt="">
+                        <div class="box-text-m"></div>
+                        <p>BEST</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-right">
+                <div class="box-category-m">
+                    <a href="#" title="">
+                        <img src="<?= $mediaUrl."images/mobile/sale.png"; ?>" alt="">
+                        <div class="box-text-m"></div>
+                         <p>SALE</p>
+                     </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-left">
+                <div class="box-category-m">
+                    <a href="#" title="">
+                        <img src="<?= $mediaUrl."images/mobile/product.png"; ?>" alt="">
+                        <div class="box-text-m"></div>
+                        <p>NEWS & PROMOTIONS</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-right">
+                <div class="box-category-m">
+                    <a href="#" title="">
+                        <img src="<?= $mediaUrl."images/mobile/social.png"; ?>" alt="">
+                        <div class="box-text-m"></div>
+                        <p>SOCIAL MEDIA GALLERY</p>
+                    </a>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>

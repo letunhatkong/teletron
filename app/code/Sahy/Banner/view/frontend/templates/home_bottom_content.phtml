@@ -1,0 +1,21 @@
+<div class="IQbanner bottom">
+    <div class="inner">        
+        <?php 
+        $baseurl = $this->getBaseUrl(); 
+        $banners = $this->getHomeBottomContentCollection();
+        $i=1;
+        foreach ($banners as $banner): ?>
+            <div class="banner_<?php echo $i; ?>">
+                <h5><?php echo $banner['name']; ?></h5>
+                <?php if(!empty($banner['link'])): ?>
+                <a href="<?php echo $banner['link'];  ?>"><img src="<?php echo $baseurl.$banner['image']; ?>"></a>
+                <?php else :?>
+                <img src="<?php echo $baseurl.$banner['image']; ?>">
+                <?php endif; ?>
+                <p>
+                    <?php echo $banner['details']; ?>
+                </p>  
+            </div>   
+        <?php $i++; endforeach; ?>   
+    </div>
+</div>

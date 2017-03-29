@@ -1,0 +1,113 @@
+<?php
+/**
+ * Blog post list template
+ * @var $block \Magefan\Blog\Block\Post\PostList
+ */
+?>
+
+<?php
+$urlInterface = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+
+$path = explode("?", $urlInterface->getCurrentUrl());
+if (isset($path[1])) $path2 = strtolower($path[1]);
+else $path2 = "";
+
+$check = 0; $filter = ""; $sort=""; $filterIsChecked = $sortIsChecked = false;
+$params = explode("&", $path2);
+if (isset($params[0])) {
+    $a = explode("=",$params[0]);
+    if (isset($a[1])) $filter = $a[1];
+}
+if (isset($params[1])) {
+    $a = explode("=",$params[1]);
+    if (isset($a[1])) $sort = $a[1];
+}
+
+
+if (!is_null($filter) && !is_null($sort)) {
+    if ($filter == "date" && $sort == "desc") $check = 0;
+    else if ($filter == "date" && $sort == "asc") {
+        $check = 1; $sortIsChecked = true;
+    }
+    else if ($filter == "name" && $sort == "desc") {
+        $check = 2; $filterIsChecked = true;
+    }
+    else if ($filter == "name" && $sort == "asc") {
+        $check = 3; $filterIsChecked = $sortIsChecked = true;
+    }
+}
+?>
+
+<?php
+switch ($check) {
+    case 0:
+        $_postCollection = $block->getSortedCollection('post_id','desc');
+        break;
+    case 1:
+        $_postCollection = $block->getSortedCollection('post_id','asc');
+        break;
+    case 2:
+        $_postCollection = $block->getSortedCollection('title', 'desc');
+        break;
+    case 3:
+        $_postCollection = $block->getSortedCollection('title', 'asc');
+        break;
+}
+?>
+
+<div class="search-bar-news">
+    <span>Date</span>
+    <label class="switch">
+        <input type="checkbox" class="listenChanged" id="filterCheckbox" <?= ($filterIsChecked) ? 'checked="checked"' : ''?> />
+        <span class="slider round"></span>
+    </label>
+
+    <span>Name</span>
+    <span>|</span>
+    <span>Desc</span>
+    <label class="switch">
+        <input type="checkbox" class="listenChanged" id="sortCheckbox" <?= ($sortIsChecked) ? 'checked="checked"' : ''?> />
+        <span class="slider round"></span>
+    </label>
+    <span>Asc</span>
+</div>
+
+
+<?php if (isset($_postCollection) && count($_postCollection) <= 0) { ?>
+    <div class="message info empty">
+        <div><?php echo __('We can\'t find posts matching the selection.') ?></div>
+    </div>
+<?php } else if (isset($_postCollection)) { ?>
+    <?php echo $block->getAdditionalHtml() ?>
+    <div class="post-list-wrapper">
+        <div class="flex-row row">
+            <?php foreach ($_postCollection as $_post) { ?>
+                <div class="col-xs-6 col-sm-6 col-md-4 recent-news-item">
+                    <?php echo $block->getPostHtml($_post) ?>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+    <?php echo $block->getToolbarHtml() ?>
+
+    <script type="text/javascript">
+        require([ 'jquery', 'jquery/ui'], function($){
+            $(document).ready(function() {
+                $('.listenChanged').change(function(){
+                    var filter = $('#filterCheckbox').is(":checked"); // filter: false = date , true = name
+                    var sort = $('#sortCheckbox').is(":checked"); // sort: false = desc, true = asc
+                    var search = "";
+
+                    if (!filter && !sort) search = '?filter=date&sort=desc';
+                    else if (!filter && sort) search = '?filter=date&sort=asc';
+                    else if (filter && !sort) search = '?filter=name&sort=desc';
+                    else if (filter && sort) search = '?filter=name&sort=asc';
+
+                    var url = $(location).attr('pathname') + search;
+                    window.location.replace(url);
+                })
+            })
+        });
+    </script>
+
+<?php } ?>

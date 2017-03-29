@@ -1,0 +1,211 @@
+<?php
+/* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
+?>
+
+<?php
+$count = 0; $title= '';
+switch ($type = $block->getType()) {
+    case 'related-rule':
+        if ($exist = $block->hasItems()) {
+            $type = 'related';
+            $class = $type;
+
+            $image = 'related_products_list';
+            $title = __('Related Products');
+            $items = $block->getAllItems();
+            $limit = $block->getPositionLimit();
+            $shuffle = (int) $block->isShuffled();
+            $canItemsAddToCart = $block->canItemsAddToCart();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+        }
+        break;
+
+    case 'related':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Related $block */
+        if ($exist = $block->getItems()->getSize()) {
+            $type = 'related';
+            $class = $type;
+
+            $image = 'related_products_list';
+            $title = __('Related Products');
+            $items = $block->getItems();
+            $limit = 0;
+            $shuffle = 0;
+            $canItemsAddToCart = $block->canItemsAddToCart();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+        }
+        break;
+
+    case 'upsell-rule':
+        if ($exist = $block->hasItems()) {
+            $type = 'upsell';
+            $class = $type;
+
+            $image = 'upsell_products_list';
+            $title = __('Upsell Products');
+            $items = $block->getAllItems();
+            $limit = $block->getPositionLimit();
+            $shuffle = (int) $block->isShuffled();
+
+            $showWishlist = false;
+            $showCompare = false;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+        break;
+
+    case 'upsell':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Upsell $block */
+        if ($exist = count($block->getItemCollection()->getItems())) {
+            $type = 'upsell';
+            $class = $type;
+
+            $image = 'upsell_products_list';
+            $title = __('Upsell Products');
+            $items = $block->getItemCollection()->getItems();
+            $limit = $block->getItemLimit('upsell');
+            $shuffle = 0;
+
+            $showWishlist = false;
+            $showCompare = false;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+        break;
+
+    case 'crosssell-rule':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
+        if ($exist = $block->hasItems()) {
+            $type = 'crosssell';
+            $class = $type;
+
+            $image = 'cart_cross_sell_products';
+            $title = __('Crosssell Products');
+            $items = $block->getItemCollection();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+        break;
+
+    case 'crosssell':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
+        if ($exist = $block->getItemCount()) {
+            $type = 'crosssell';
+            $class = $type;
+
+            $image = 'cart_cross_sell_products';
+            $title = __('Crosssell Products');
+            $items = $block->getItems();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+        break;
+
+    case 'new':
+        if ($exist = $block->getProductCollection()) {
+            $type = 'new';
+            $mode = 'grid';
+            $type = $type . ' ' . $mode;
+
+            $class = 'widget' . ' ' . $type;
+
+            $image = 'new_products_content_widget_grid';
+            $title = __('New Products');
+            $items = $exist;
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = ($mode == 'list') ? true : false;
+            $canItemsAddToCart = false;
+        }
+        break;
+
+    case 'other':
+        break;
+}
+?>
+
+<?php
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
+$currentStore = $storeManager->getStore();
+$baseUrl = $currentStore->getBaseUrl();
+$mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$linkUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_LINK);
+?>
+
+
+<?php if (isset($items) && ($type == 'related' || $type == 'upsell' )) { ?>
+    <div class="sliderDPWrapper <?= $type ?>">
+        <p class="headingDP"><?= $title ?></p>
+        <div class="clearfix pad20"></div>
+        <div id="<?= $type ?>Slider" class="carousel slide" data-ride="carousel" data-interval="false">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <?php $i = 1; ?>
+                <?php foreach($items as $_item) { ?>
+                    <?php if ($i % 4 == 1) { ?>
+                    <div class="item <?= ($i == 1)?' active':'' ?>">
+                        <div class="row">
+                    <?php } ?>
+
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="innerSliderDP">
+                            <a href="<?= $block->getProductUrl($_item) ?>">
+                                <?php
+                                $imgUrl = $block->getImage($_item, 'category_page_list')->getImageUrl();
+                                // $mediaUrl .'catalog/product'. $_item->getThumbnail()
+                                ?>
+                                <img src="<?= $imgUrl  ?>" />
+                                <p><?= $_item->getName() ?></p>
+                                <!-- $block->getProductPrice($_item) ?> -->
+                            </a>
+                        </div>
+                    </div>
+
+                    <?php if ($i % 4 == 0 || $i == count($items)) { ?>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <?php $i++; ?>
+                <?php } ?>
+            </div>
+
+            <!-- Controls -->
+            <a href="#<?= $type ?>Slider" role="button" data-slide="prev">
+                <div class="prevButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+            </a>
+            <a href="#<?= $type ?>Slider" role="button" data-slide="next">
+                <div class="nextButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+            </a>
+        </div>
+    </div>
+<?php } ?>
+
+

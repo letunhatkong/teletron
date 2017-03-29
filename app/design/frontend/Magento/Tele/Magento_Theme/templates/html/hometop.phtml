@@ -1,0 +1,20 @@
+<?php
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
+$currentStore = $storeManager->getStore();
+$baseUrl = $currentStore->getBaseUrl();
+$mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$linkUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_LINK);
+?>
+<div id="contaier-fild">
+	<div class="row header-top">
+		<div class="promotion col-md-8">
+			<span>promotion</span>
+		</div>
+		<div class="social-right col-md-4">
+			<span><a href="<?= $baseUrl  ?>brand" title="">manufacturers</a></span>
+			<span class="lane-top-social">|</span>
+			<span><a href="<?= $baseUrl  ?>socialMediaGallery" title="">social media gallery</a></span>
+		</div>
+	</div>	
+</div>

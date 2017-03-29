@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.main" htmlTag="div" htmlClass="product-info-main contentDP" />
+        <referenceContainer name="product.info.media" htmlTag="div" htmlClass="product media mediaDP" />
+
+        <move  element="page.main.title" destination="header-wrapper" after="-" />
+        <!-- <move element="page.main.title" destination="product.info.main" before="-"/> -->
+        <!-- <move element="product.info.media" destination="content" before="-" /> -->
+
+
+    </body>
+</page>

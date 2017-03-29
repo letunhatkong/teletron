@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Backend/etc/menu.xsd">
+    <menu>
+        <add id="sahy::base" title="Home Banner" module="Sahy_Banner" sortOrder="35" resource="Sahy_Banner::sample"/>
+        <add id="sahy_banner::banner" title="Home Banner CMS" module="Sahy_Banner" sortOrder="10" parent="sahy::base" action="sahy_banner/items/" resource="Sahy_Banner::items"/>
+    </menu>
+</config>
