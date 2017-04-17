@@ -22,6 +22,7 @@
                     <li class="nav item"><a href="<?= $baseUrl.'cancellations-returns'; ?>">Cancellations And Returns</a></li>
                     <li class="nav item"><a href="<?= $baseUrl.'terms-and-conditions'; ?>">Terms and Conditions</a></li>
                     <li class="nav item"><a href="<?= $baseUrl.'privacy-policy'; ?>">Privacy Policy</a></li>
+                    <li class="nav item"><a href="<?= $baseUrl  ?>brand" title="">Manufacturers</a></li>
                 </ul>
             </div>
             <div class="col-xs-12 col-sm-3 customer-care">
@@ -120,6 +121,16 @@
                     }
                 }
             });
+            // link new promotion
+            var u = window.location.href;   
+            var a= u.split("/");
+            var contact = a[a.length-1];
+            if (contact == "#contact-us") {
+                jQuery('html, body').animate({
+                    scrollTop: jQuery("#contact-us").offset().top - 500
+                }, 2000);
+            }
+
         }); 
     });
 </script>
@@ -130,54 +141,54 @@
             <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-left">
                 <div class="box-category-m">
                     <a href="#" title="">
-                        <img src="<?= $mediaUrl."images/mobile/new.png"; ?>" alt="">
+                        <img src="<?= $mediaUrl."images/mobile/luxy.png"; ?>" alt="LUXURY FURNISHING PACKAGES">
                         <div class="box-text-m"></div>
-                        <p>NEW PRODUCT</p>
+                        <p>LUXURY FURNISHING PACKAGES</p>
                     </a>
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-right">
                 <div class="box-category-m">
                     <a href="#" title="">
-                        <img src="<?= $mediaUrl."images/mobile/top.png"; ?>" alt="">
+                        <img src="<?= $mediaUrl."images/mobile/top.png"; ?>" alt="NEW PRODUCT">
                         <div class="box-text-m"></div>
-                        <p>TOP</p>
+                        <p>NEW PRODUCT</p>
                     </a>
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-left">
                 <div class="box-category-m">
                     <a href="#" title="">
-                        <img src="<?= $mediaUrl."images/mobile/best.png"; ?>" alt="">
+                        <img src="<?= $mediaUrl."images/mobile/best.png"; ?>" alt="TOP">
                         <div class="box-text-m"></div>
-                        <p>BEST</p>
+                        <p>TOP</p>
                     </a>
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-right">
                 <div class="box-category-m">
                     <a href="#" title="">
-                        <img src="<?= $mediaUrl."images/mobile/sale.png"; ?>" alt="">
+                        <img src="<?= $mediaUrl."images/mobile/sale.png"; ?>" alt="BEST">
                         <div class="box-text-m"></div>
-                         <p>SALE</p>
+                         <p>BEST</p>
                      </a>
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-left">
                 <div class="box-category-m">
                     <a href="#" title="">
-                        <img src="<?= $mediaUrl."images/mobile/product.png"; ?>" alt="">
+                        <img src="<?= $mediaUrl."images/mobile/product.png"; ?>" alt="SALE">
                         <div class="box-text-m"></div>
-                        <p>NEWS & PROMOTIONS</p>
+                        <p>SALE</p>
                     </a>
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 mobile-p-right">
                 <div class="box-category-m">
                     <a href="#" title="">
-                        <img src="<?= $mediaUrl."images/mobile/social.png"; ?>" alt="">
+                        <img src="<?= $mediaUrl."images/mobile/social.png"; ?>" alt="NEWS & PROMOTIONS">
                         <div class="box-text-m"></div>
-                        <p>SOCIAL MEDIA GALLERY</p>
+                        <p>NEWS & PROMOTIONS</p>
                     </a>
                  </div>
             </div>

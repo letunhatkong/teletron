@@ -20,11 +20,21 @@
             <?php foreach($_sub1 as $bn) { ?>
                 <div class="item <?= ($i == 1) ? 'active':'' ?>">
                     <img src="<?= $mediaUrl . $bn['image']?>" />
-                    <div class="innerHS">
+                    
                         <?php if ($bn['link'] != '') { ?>
-                            <a href="<?=$bn['link']?>" class="clickHereHS" target="_blank"><?= $bn['details'] ?></a>
-                        <?php } ?>
-                    </div>
+                            <?php if ($bn['details'] == 'Learn More') { ?>
+                            <div class="box_learn_more">
+                                <a href="<?=$bn['link']?>" class="learn_more_slider" target="_blank"><?= $bn['details'] ?></a>
+                            </div>
+                            <?php }else{ ?>
+                            <div class="innerHS">
+                                <a href="<?=$bn['link']?>" class="clickHereHS" target="_blank"><?= $bn['details'] ?></a>
+                            </div>
+                            <?php }
+                         } ?>
+                        
+
+                    
                 </div>
                 <?php $i++; ?>
             <?php } ?>
@@ -58,14 +68,49 @@
     // /Magento\Catalog\Model\Category
   
     $subcats1 = $topsunCategory->getChildrenCategories();
+
+    $col1 = []; $col2 = []; $col3 = [];
+    $i = 0;
+    foreach ($subcats1 as $item) {
+        $i++;
+        $n = $i % 3;
+
+        if ($n == 1) array_push($col1, $item);
+        else if ($n == 2) array_push($col2, $item);
+        else  array_push($col3, $item);         
+    }
+    $arrayOne =[];$arrayTow =[];$arrayThe =[];
+    $newArr1 =[];$newArr2 =[];$newArr3 =[];
+    $newArr1 = array_slice($col1, 0,1);
+    $newArr2 = array_slice($col1, 1,1);
+    $newArr3 = array_slice($col1, 2,1);
+
+    $newArr4 =[];$newArr5=[];$newArr6 =[];
+    $newArr4 = array_slice($col2, 0,1);
+    $newArr5 = array_slice($col2, 1,1);
+    $newArr6 = array_slice($col2, 2,1);
+
+    $newArr7 =[];$newArr8 =[];
+    $newArr7 = array_slice($col3, 0,1);
+    $newArr8 = array_slice($col3, 1,1);
+
+    $arrayOne = array_merge($newArr1, $newArr2, $newArr5);
+
+    $arrayTow = array_merge($newArr4, $newArr8);
+
+    $arrayThe = array_merge($newArr7, $newArr3, $newArr6);
+
+
+
 ?>
 <div class="container-fuld">
     <div id="pr-product">
         <p class="text-first">LUXURY FURNITURE PACKAGES</strong></p>
         <p class="text-second">Home Design Services</p>
         <hr style="width: 90px; border-top: 3px solid #EAE3E3; margin: auto;">
-        <div class="row cols" id="section-pr">
-            <?php  foreach ($subcats1 as $subcat) {  ?>
+    <div class="row" id="section-pr">
+        <div class="col-md-4 col-sm-4">
+        <?php  foreach ($arrayOne as $subcat) {  ?>
             <div class="item subcat-category">
                 <a href="<?= $subcat->getUrl();?>" title="" class="link-sub">
                     <img src="<?= $subcat->getImageUrl(); ?>" alt="">
@@ -77,9 +122,40 @@
                     </span>
                 </div>
             </div>
-            <?php } ?>
+            <?php } ?>  
         </div>
-    </div>
+        <div class="col-md-4 col-sm-4">
+        <?php  foreach ($arrayTow as $subcat) {  ?>
+            <div class="item subcat-category">
+                <a href="<?= $subcat->getUrl();?>" title="" class="link-sub">
+                    <img src="<?= $subcat->getImageUrl(); ?>" alt="">
+                </a>
+                <div class="box-text-sub">        
+                    <span class="subcat-title">
+                        <a href="<?= $subcat->getUrl();?>" title=""><?= $subcat->getName(); ?></a>
+                        <a href="<?= $subcat->getUrl();?>" title="" class="read-more">Read More</a>
+                    </span>
+                </div>
+            </div>
+            <?php } ?>  
+        </div>
+        <div class="col-md-4 col-sm-4">
+        <?php  foreach ($arrayThe as $subcat) {  ?>
+            <div class="item subcat-category">
+                <a href="<?= $subcat->getUrl();?>" title="" class="link-sub">
+                    <img src="<?= $subcat->getImageUrl(); ?>" alt="">
+                </a>
+                <div class="box-text-sub">        
+                    <span class="subcat-title">
+                        <a href="<?= $subcat->getUrl();?>" title=""><?= $subcat->getName(); ?></a>
+                        <a href="<?= $subcat->getUrl();?>" title="" class="read-more">Read More</a>
+                    </span>
+                </div>
+            </div>
+            <?php } ?>  
+        </div>
+    </div> 
+</div>
 <div id="new-product">
     <p class="text-first">NEW PRODUCTS</p>
     <hr class="lane-decoration">
@@ -95,7 +171,7 @@
         ->load();
     foreach ($collection as $product){ ?>
 
-        <div class="col-md-3 custom-resize">
+        <div class="col-md-3 col-sm-6 custom-resize">
             <a href="<?= $product->getProductUrl()?>">
                 <img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>">
             </a>
@@ -147,7 +223,7 @@
 
     <div class="row section-top open">
         <?php  foreach ($topCate as $product){ ?>
-        <div class="col-md-3 custom-resize">
+        <div class="col-md-3 col-sm-6 custom-resize">
         <div class="box-img">
             <a href="<?= $product->getProductUrl()?>">
                 <img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>">
@@ -167,7 +243,7 @@
     </div>
     <div class="row section-best">
         <?php  foreach ($bestCate as $product){ ?>
-            <div class="col-md-3 custom-resize">
+            <div class="col-md-3 col-sm-6 custom-resize">
                 <a href="<?= $product->getProductUrl()?>"><img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>"></a>
                 <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
                 <?php $specialPrice = $product->getSpecialPrice(); 
@@ -235,41 +311,38 @@
         <p class="text-first">NEW & PROMOTIONS</strong></p>
         <hr class="lane-decoration">
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 style-padding">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 style-padding">
                 <div class="demo-3" id ="box-one"> 
                     <a href="<?= $baseUrl.'blog/category/korean'?>" title="">
                     <div class="box-1">
                     <?php foreach ($korean as $proItem) { ?>
-                        <img src="<?= $proItem->getFeaturedImage() ?>" style="width:100%; height: 380px;">
+                        <img src="<?= $proItem->getFeaturedImage() ?>">
                     <?php } ?>
                         <div class="details"></div>
-                        <span class="category-content"><?= $koreanCat->getContent() ?></span>
-                        <h3><?= $koreanCat->getTitle() ?></h3> 
+                        <span class="category-content"><?= $koreanCat->getTitle() ?></span>
                      </div>
                     </a>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 style-padding">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 style-padding">
                 <div class="demo-3" id ="box-two"> 
                     <a href="<?= $baseUrl.'blog/category/chinese'?>" title="">
                     <?php foreach ($chinese as $proItem) { ?>
-                        <img src="<?= $proItem->getFeaturedImage() ?>" style="width:100%; height: 380px;">
+                        <img src="<?= $proItem->getFeaturedImage() ?>">
                     <?php } ?>
                         <div class="details"></div>
-                        <span class="category-content"><?= $chineseCat->getContent() ?></span>
-                        <h3><?= $chineseCat->getTitle() ?></h3> 
+                        <span class="category-content"><?= $chineseCat->getTitle() ?></span>
                     </a>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 style-padding">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 style-padding">
                 <div class="demo-3" id ="box-three"> 
                     <a href="<?= $baseUrl.'blog/category/vietnamese'?>" title="">
                         <?php foreach ($vietnam as $proItem) { ?>
-                            <img src="<?= $proItem->getFeaturedImage() ?>" style="width:100%; height: 380px; ">
+                            <img src="<?= $proItem->getFeaturedImage() ?>">
                         <?php } ?>
                         <div class="details"></div>
-                        <span class="category-content"><?= $vietnamCat->getContent() ?></span>
-                        <h3><?= $vietnamCat->getTitle() ?></h3>  
+                        <span class="category-content"><?= $vietnamCat->getTitle() ?></span>
                     </a>
                 </div>
             </div>
@@ -291,42 +364,6 @@
                 $('.section-best').addClass("open");
                 $('.text-best').addClass('change-color');
                 $('.text-top').removeClass('change-color');
-            });
-            // jquery ads
-            jQuery("#box-one").mouseover(function(){
-                // jQuery("#box-one .details").css("height", "100%");
-                // jQuery("#box-one  h3").css("padding-top", "20%");
-                // jQuery("#box-one  h3").css("top", "0%");
-            });
-             jQuery("#box-one").mouseout(function(){
-                // jQuery("#box-one .details").css("height", "30%");
-                // jQuery("#box-one  h3").css("padding-top", "0%");
-                // jQuery("#box-one  h3").css("top", "75%");
-            });
-
-
-             jQuery("#box-two").mouseover(function(){
-                // jQuery("#box-two .details").css("height", "100%");
-                // jQuery("#box-two h3").css("padding-top", "20%");
-                // jQuery("#box-two h3").css("top", "0");
-            });
-             jQuery("#box-two").mouseout(function(){
-                // jQuery("#box-two .details").css("height", "30%");
-                // jQuery("#box-two h3").css("padding-top", "0%");
-                // jQuery("#box-two h3").css("top", "75%");
-
-            });
-
-
-             jQuery("#box-three").mouseover(function(){
-                // jQuery("#box-three .details").css("height", "100%");
-                // jQuery("#box-three  h3").css("padding-top", "20%");
-                // jQuery("#box-three  h3").css("top", "0%");
-            });
-             jQuery("#box-three").mouseout(function(){
-                // jQuery("#box-three .details").css("height", "30%");
-                // jQuery("#box-three  h3").css("padding-top", "0%");
-                // jQuery("#box-three  h3").css("top", "75%");
             });
         }); 
     });

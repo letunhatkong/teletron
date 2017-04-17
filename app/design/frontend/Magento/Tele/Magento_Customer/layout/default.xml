@@ -8,19 +8,16 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="top.links">
-            <block class="Magento\Customer\Block\Account\Link" name="my-account-link">
+           <!--  <block class="Magento\Customer\Block\Account\Link" name="my-account-link">
                 <arguments>
-                    <argument name="label" xsi:type="string" translate="true"></argument>
+                    <argument name="label" xsi:type="string" translate="true">My Account</argument>
                 </arguments>
-            </block>
-            <block class="Magento\Customer\Block\Account\RegisterLink" name="register-link">
-                <arguments>
-                    <argument name="label" xsi:type="string" translate="true"></argument>
-                </arguments>
-            </block>
+            </block> -->
+            
             <block class="Magento\Customer\Block\Account\AuthorizationLink" name="authorization-link"
                    template="account/link/authorization.phtml"/>
         </referenceBlock>
-
+        <referenceBlock remove="true" name="register-link"/>
+        <referenceBlock remove="true" name="my-account-link"/>
     </body>
 </page>

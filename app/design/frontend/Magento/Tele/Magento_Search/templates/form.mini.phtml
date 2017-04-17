@@ -69,51 +69,62 @@ foreach ($categoryy as $cate) {
                         ?>
                     </span>
                     </a>
-                    <div class="menu-wrap-sub"> 
-                        <div class="ulmenu-block">
-                            <?php if ($hasSub) { ?>
-                                <ul class="sub-active category-child">
-                                    <?php foreach ($key["subCategories"] as $subCate) { ?>
-                                        <li class="level1">
-                                            <a href="<?= $subCate['url'] ?>" title="<?= $subCate['name'] ?>">
-                                                <span class="title_child"><?= $subCate['name'] ?></span>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
-                                </ul>
+                    <?php if ($hasSub) { ?>
+                    <div class="box-child-menu">
+                        <ul class="sub-active category-child">
+                            <?php foreach ($key["subCategories"] as $subCate) { ?>
+                                <li class="level1">
+                                    <a href="<?= $subCate['url'] ?>" title="<?= $subCate['name'] ?>">
+                                        <span class="title_child"><?= $subCate['name'] ?></span>
+                                    </a>
+                                </li>
                             <?php } ?>
-                        </div>  
+                        </ul>
                     </div>
+                    <?php } ?>
                 </li>
             <?php } ?>
-            <li class="category-item level0">
-                <a href="#" title="" class="level-top ui-corner-all">
-                    <span>NEW & PROMOTIONS</span>
-                 </a>
-                <div class="menu-wrap-sub"> 
-                    <div class="ulmenu-block">
-                        <ul class="sub-active category-child">
-                            <li class="level1">
-                                <a href="<?= $baseUrl.'blog/category/korean'; ?>" title="">
-                                    <span class="title_child">KOREAN</span>
-                                </a>
-                            </li>
-                            <li class="level1">
-                                <a href="<?= $baseUrl.'blog/category/chinese'; ?>" title="">
-                                    <span class="title_child">CHINESE</span>
-                                </a>
-                            </li>
-                            <li class="level1">
-                                <a href="<?= $baseUrl.'blog/category/vietnamese'; ?>" title="">
-                                    <span class="title_child">VIETNAMESE</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>  
+            <div class="block block-search" id="topSearchWrap">
+                <!-- <div class="block block-title"><strong>Search</strong></div> -->
+                <div id="clickTopSearchIcon"></div>
+
+                <div class="block block-content">
+                    <form class="form minisearch" id="search_mini_form" action="<?= $helper->getResultUrl() ?>" method="get">
+                        <div class="field search">
+                            <!-- <label class="label" for="search" data-role="minisearch-label"><span>Search</span></label>-->
+                            <div class="control">
+                                <input id="search"
+                                       data-mage-init='{"quickSearch":{
+                                            "formSelector":"#search_mini_form",
+                                            "url":"<?= $block->getUrl('search/ajax/suggest'); ?>",
+                                            "destinationSelector":"#search_autocomplete"}
+                                       }'
+                                       type="text"
+                                       name="<?= $helper->getQueryParamName() ?>"
+                                       value="<?= $helper->getEscapedQueryText() ?>"
+                                       placeholder="<?= __('What are looking for?'); ?>"
+                                       class="input-text"
+                                       maxlength="<?= $helper->getMaxQueryLength();?>"
+                                       role="combobox"
+                                       aria-haspopup="false"
+                                       aria-autocomplete="both"
+                                       autocomplete="off"/>
+                                <div id="search_autocomplete" class="search-autocomplete"></div>
+                                <?= $block->getChildHtml() ?>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button type="submit"
+                                    title="<?= $block->escapeHtml(__('Search')) ?>"
+                                    class="action search">
+                                <span><?= __('Search'); ?></span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </li>
+            </div>
         </ul>
-</nav>
+    </nav>
 
 <div class="block block-search" id="topSearchWrap">
     <!-- <div class="block block-title"><strong>Search</strong></div> -->

@@ -1,53 +1,15 @@
 <?php
-$objectManagerr = \Magento\Framework\App\ObjectManager::getInstance();
-$categoryFactory = $objectManagerr->create('Magento\Catalog\Model\ResourceModel\Category\CollectionFactory');
-$categoryy = $categoryFactory->create()
-    ->addAttributeToFilter('is_active', '1')
-    ->addAttributeToSelect('name');
-
-$category_ar = [];
-$rootId = 0;
-$first = false;
-foreach ($categoryy as $cate) {
-
-    $curId = intval($cate->getId());
-    $parentId = intval($cate->getParentID());
-
-    if ($parentId == 1 && !$first) {
-        $rootId = $curId;
-        $first = true;
-    }
-
-    if (isset($parentId) && $rootId > 0 && $parentId == $rootId) {
-        $category_ar[$curId] = [
-            "id" => $curId,
-            "name" => $cate->getName(),
-            "url" => $cate->getURL(),
-            "parentId" => $parentId,
-            "isActive" => 1,
-            "subCategories" => []
-        ];
-    } else if ($parentId != $rootId && $first && $parentId != 1) {
-        if (isset($category_ar[$parentId])) {
-            $len = count($category_ar[$parentId]["subCategories"]);
-            $category_ar[$parentId]["subCategories"][$len] = [
-                "id" => $curId,
-                "name" => $cate->getName(),
-                "url" => $cate->getURL(),
-                "parentId" => $parentId,
-                "isActive" => 1
-            ];
-        }
-    }
-}
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+// Get Menu
+$menu = $objectManager->get('\Magento\Theme\Block\Html\Topmenu');
+$_menu = $menu->getHtml('level-top', 'submenu');
+// Get Current Category name
+$currentCategory = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
 ?>
-<?php 
-    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-   $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
-?>
+
 <div id="box-filter-m">
     <div class="category-current">
-        <?=  $category->getName();?>
+        <?=  $currentCategory->getName();?>
     </div>
     <div class="count-p">
         1 Item
@@ -58,46 +20,29 @@ foreach ($categoryy as $cate) {
 </div>
 <div class="block filter categorySidebar" id="layered-filter-block">
     <h4 class="title-sidaber title-">CATEGORIES</h4>
-    <div id='cssmenu'>
+    <div id='cssmenu-left'>
         <ul>
-            <?php
-            foreach ($category_ar as $key) {
-                $hasSub = (is_array($key["subCategories"]) && count($key["subCategories"]) > 0) ? true : false;
-                ?>
-                <li class='has-sub'>
-                    <!--                    <a href="-->
-                    <?php //echo ($hasSub) ? 'javascript:void(0);' : $key["url"] ?><!--" title="-->
-                    <? //= $key['name'] ?><!--">-->
-                    <a href="<?php echo $key["url"]; ?>" title="<?= $key['name'] ?>" class="<?= $key['name'] ?>">
-                    <span>
-                        <?php
-                        echo $key['name'];
-                        ?>
-                    </span>
-                    </a>
-
-                    <?php if ($hasSub) { ?>
-                        <span class="sign"></span>
-                        <ul class="sub-active">
-                            <?php foreach ($key["subCategories"] as $subCate) { ?>
-                                <li>
-                                    <a href="<?= $subCate['url'] ?>" title="<?= $subCate['name'] ?>">
-                                        <span><?= $subCate['name'] ?></span>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                    <?php } ?>
-                </li>
-            <?php } ?>
+            <?= $_menu ?>
         </ul>
     </div>
 </div>
-
 <script type="text/javascript">
     require([ 'jquery', 'jquery/ui'], function($){ 
         $(document).ready(function($){
-             $('#filter-p').click(function(){
+            // check tror link  category
+            
+            if(($("#cssmenu-left li.parent").hasClass("active"))){
+                $("<li class='sub-link'></li>").insertBefore('#cssmenu-left .active .level0');
+            } 
+            if(($("#cssmenu-left li.parent").hasClass("has-active"))){
+                $("<li class='sub-link'></li>").insertBefore('#cssmenu-left .has-active .submenu');
+            } 
+            // add html + or -
+            if(($('#cssmenu-left .level0').hasClass('parent'))){
+                $("<a href='javascript:void(0)' title='' class='parent-child'></a>").insertAfter("#cssmenu-left .parent > a");
+            }
+            // code filter click
+            $('#filter-p').click(function(){
                 if($('#layered-filter-block').hasClass('active_filter')){
                     $('#layered-filter-block').removeClass('active_filter');
                     $('.page-products .sidebar-main .filter').removeClass('active_filter');
@@ -105,7 +50,7 @@ foreach ($categoryy as $cate) {
                     $('#layered-filter-block').addClass('active_filter');
                     $('.page-products .sidebar-main .filter').addClass('active_filter');
                 }
-             });
+             });       
         });
     });
-</script>  
+</script>

@@ -8,11 +8,15 @@ $linkUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_L
 ?>
 <div id="contaier-fild">
 	<div class="row header-top">
-		<div class="promotion col-md-8">
+		<div class="promotion col-md-7 col-sm-6">
 			<span>promotion</span>
 		</div>
-		<div class="social-right col-md-4">
-			<span><a href="<?= $baseUrl  ?>brand" title="">manufacturers</a></span>
+		<div class="social-right col-md-5 col-sm-6">
+			<div class="box-new-promotion-post">
+				<li id="new-promotion-post"><a href="<?= $baseUrl ?>#promotion-product" title="" >NEW & PROMOTIONS</a>
+                </li>
+			</div>
+			
 			<span class="lane-top-social">|</span>
 			<span><a href="<?= $baseUrl  ?>socialMediaGallery" title="">social media gallery</a></span>
 		</div>

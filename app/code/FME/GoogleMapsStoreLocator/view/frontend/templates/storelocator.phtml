@@ -60,14 +60,15 @@ if($helper->isEnabledInFrontend()):
       
           marker = new google.maps.Marker({
               position: new google.maps.LatLng(locations[i]['latitude'], locations[i]['longitude']),
-              map: map,              
+              map: map, 
+              "icon": 'pub/media/images/icon-point.png',             
               mapTypeId: google.maps.MapTypeId.ROADMAP
           });
           contentString[i] = '<div id="content">'+
             '<div id="siteNotice">'+
             '</div>'+
             '<h3 id="firstHeading" class="firstHeading">'+locations[i]['store_name']+'</h3>'+
-            '<div id="bodyContent">'+locations[i]['address']+'</div>'+
+            '<div id="bodyContent"><span>'+locations[i]['address']+'</span></div>'+
             '</div>';       
       google.maps.event.addListener(marker, 'click', (function(marker,i) {  
            return function() {  
@@ -115,14 +116,15 @@ if($helper->isEnabledInFrontend()):
                 
                 marker = new google.maps.Marker({
                 position: new google.maps.LatLng(locations[i]['latitude'], locations[i]['longitude']),
-                map: map,              
+                map: map,
+                "icon": 'pub/media/images/icon-point.png',              
                 mapTypeId: google.maps.MapTypeId.ROADMAP
           });
                 contentString[i] = '<div id="content">'+
                 '<div id="siteNotice">'+
                 '</div>'+
                 '<h3 id="firstHeading" class="firstHeading">'+locations[i]['store_name']+'</h3>'+
-                '<div id="bodyContent">'+locations[i]['address']+'</div>'+
+                '<div id="bodyContent"><span>'+locations[i]['address']+'</span></div>'+
                 '</div>';
        
       google.maps.event.addListener(marker, 'click', (function(marker,i) {  

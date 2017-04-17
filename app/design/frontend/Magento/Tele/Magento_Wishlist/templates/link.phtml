@@ -17,7 +17,7 @@
 ?>
 <li class="lane-top">|</li>
 <li class="link wishlist" data-bind="scope: 'wishlist'">
-    <a <?php /* @escapeNotVerified */ echo $block->getLinkAttributes() ?>><img src="<?= $mediaUrl."images/mobile/heart.png"; ?>" alt="">
+    <a <?php /* @escapeNotVerified */ echo $block->getLinkAttributes() ?>><img src="<?= $mediaUrl."images/mobile/heart.png"; ?>" alt=""><p class="name-wishlist">Wishlist</p>
         <!-- ko if: wishlist().counter -->
         <span data-bind="text: wishlist().counter" class="counter qty"></span>
         <!-- /ko -->
