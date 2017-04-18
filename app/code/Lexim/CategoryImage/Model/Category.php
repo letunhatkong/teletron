@@ -11,15 +11,15 @@ namespace Lexim\CategoryImage\Model;
  */
 class Category extends \Magento\Catalog\Model\ResourceModel\Category
 {
-    
+
     /**
      * Category constructor.
      * @param \Magento\Eav\Model\Entity\Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Catalog\Model\Factory $modelFactory
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param Category\TreeFactory $categoryTreeFactory
-     * @param Category\CollectionFactory $categoryCollectionFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\TreeFactory $categoryTreeFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollectionFactory
      * @param array $data
      */
     public function __construct(

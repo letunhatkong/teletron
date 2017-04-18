@@ -1,105 +1,86 @@
 <?php
-    $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-    $storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
-    $currentStore = $storeManager->getStore();
-    $baseUrl = $currentStore->getBaseUrl();
-    $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
-    $linkUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_LINK);
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
+$currentStore = $storeManager->getStore();
+$baseUrl = $currentStore->getBaseUrl();
+$mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$linkUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_LINK);
 
-    $sa = $_objectManager->get('Sahy\Banner\Block\Frontend\Banners');
-    $_sub1 = $sa->getAllBannerByType($sa::TYPE_SUB_BANNER1);
-    $_sub2 = $sa->getAllBannerByType($sa::TYPE_SUB_BANNER2);
+$sa = $_objectManager->get('Sahy\Banner\Block\Frontend\Banners');
+$_sub1 = $sa->getAllBannerByType($sa::TYPE_SUB_BANNER1);
+$_sub2 = $sa->getAllBannerByType($sa::TYPE_SUB_BANNER2);
 ?>
 <div class="row">
-<?php if (isset($_sub1) && count($_sub1) > 0) { ?>
-    <?php $size = count($_sub1); ?>
-    <div id="bannerHS" class="carousel slide" data-ride="carousel">
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
-            <?php $i =1; ?>
-            <?php foreach($_sub1 as $bn) { ?>
-                <div class="item <?= ($i == 1) ? 'active':'' ?>">
-                    <img src="<?= $mediaUrl . $bn['image']?>" />
-                    
+    <?php if (isset($_sub1) && count($_sub1) > 0) { ?>
+        <?php $size = count($_sub1); ?>
+        <div id="bannerHS" class="carousel slide" data-ride="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <?php $i = 1; ?>
+                <?php foreach ($_sub1 as $bn) { ?>
+                    <div class="item <?= ($i == 1) ? 'active' : '' ?>">
+                        <img src="<?= $mediaUrl . $bn['image'] ?>"/>
+
                         <?php if ($bn['link'] != '') { ?>
                             <?php if ($bn['details'] == 'Learn More') { ?>
-                            <div class="box_learn_more">
-                                <a href="<?=$bn['link']?>" class="learn_more_slider" target="_blank"><?= $bn['details'] ?></a>
-                            </div>
-                            <?php }else{ ?>
-                            <div class="innerHS">
-                                <a href="<?=$bn['link']?>" class="clickHereHS" target="_blank"><?= $bn['details'] ?></a>
-                            </div>
+                                <div class="box_learn_more">
+                                    <a href="<?= $bn['link'] ?>" class="learn_more_slider"
+                                       target="_blank"><?= $bn['details'] ?></a>
+                                </div>
+                            <?php } else { ?>
+                                <div class="innerHS">
+                                    <a href="<?= $bn['link'] ?>" class="clickHereHS"
+                                       target="_blank"><?= $bn['details'] ?></a>
+                                </div>
                             <?php }
-                         } ?>
-                        
+                        } ?>
 
-                    
-                </div>
-                <?php $i++; ?>
-            <?php } ?>
+
+                    </div>
+                    <?php $i++; ?>
+                <?php } ?>
+            </div>
+            <!-- Controls -->
+            <a href="#bannerHS" role="button" data-slide="prev">
+                <div class="prevButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+            </a>
+            <a href="#bannerHS" role="button" data-slide="next">
+                <div class="nextButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+            </a>
+
+            <!-- Indicators -->
+            <ol class="carousel-indicators hidden">
+                <?php $i = 0 ?>
+                <?php foreach ($_sub1 as $bn) { ?>
+                    <li data-target="#bannerHS" data-slide-to="<?= $i ?>" class="<?= ($i == 0) ? 'active' : '' ?>"></li>
+                    <?php $i++; ?>
+                <?php } ?>
+            </ol>
         </div>
-        <!-- Controls -->
-        <a href="#bannerHS" role="button" data-slide="prev">
-            <div class="prevButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
-        </a>
-        <a href="#bannerHS" role="button" data-slide="next">
-            <div class="nextButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
-        </a>
-
-        <!-- Indicators -->
-        <ol class="carousel-indicators hidden">
-            <?php $i =0 ?>
-            <?php foreach($_sub1 as $bn) { ?>
-                <li data-target="#bannerHS" data-slide-to="<?= $i ?>" class="<?= ($i == 0) ? 'active':'' ?>"></li>
-                <?php $i++; ?>
-            <?php } ?>
-        </ol>
-    </div>
-    <div class="clearfix pad40"></div>
-<?php } ?>
+        <div class="clearfix pad40"></div>
+    <?php } ?>
 </div>
-<?php 
-    $categoryFactory = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Category\CollectionFactory');
-    $topsunCategory = $categoryFactory->create()
-    ->addAttributeToFilter('url_key','luxury-furnishing-packages')
+<?php
+$categoryFactory = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Category\CollectionFactory');
+$topSunCategory = $categoryFactory->create()
+    ->addAttributeToFilter('url_key', 'luxury-furnishing-packages')
     ->addAttributeToSelect('*')
     ->getFirstItem();
-    // /Magento\Catalog\Model\Category
-  
-    $subcats1 = $topsunCategory->getChildrenCategories();
+// /Magento\Catalog\Model\Category
 
-    $col1 = []; $col2 = []; $col3 = [];
-    $i = 0;
-    foreach ($subcats1 as $item) {
-        $i++;
-        $n = $i % 3;
+$subCats = $topSunCategory->getChildrenCategories();
 
-        if ($n == 1) array_push($col1, $item);
-        else if ($n == 2) array_push($col2, $item);
-        else  array_push($col3, $item);         
-    }
-    $arrayOne =[];$arrayTow =[];$arrayThe =[];
-    $newArr1 =[];$newArr2 =[];$newArr3 =[];
-    $newArr1 = array_slice($col1, 0,1);
-    $newArr2 = array_slice($col1, 1,1);
-    $newArr3 = array_slice($col1, 2,1);
+$arrayOne = [];
+$arrayTwo = [];
+$arrayThree = [];
+$i = 0;
+foreach ($subCats as $item) {
+    $i++;
 
-    $newArr4 =[];$newArr5=[];$newArr6 =[];
-    $newArr4 = array_slice($col2, 0,1);
-    $newArr5 = array_slice($col2, 1,1);
-    $newArr6 = array_slice($col2, 2,1);
-
-    $newArr7 =[];$newArr8 =[];
-    $newArr7 = array_slice($col3, 0,1);
-    $newArr8 = array_slice($col3, 1,1);
-
-    $arrayOne = array_merge($newArr1, $newArr2, $newArr5);
-
-    $arrayTow = array_merge($newArr4, $newArr8);
-
-    $arrayThe = array_merge($newArr7, $newArr3, $newArr6);
-
+    if ( in_array($i, [1,4,5]) ) array_push($arrayOne, $item);
+    else if ( in_array($i, [2,6]) ) array_push($arrayTwo, $item);
+    else array_push($arrayThree, $item);
+}
 
 
 ?>
@@ -108,194 +89,239 @@
         <p class="text-first">LUXURY FURNITURE PACKAGES</strong></p>
         <p class="text-second">Home Design Services</p>
         <hr style="width: 90px; border-top: 3px solid #EAE3E3; margin: auto;">
-    <div class="row" id="section-pr">
-        <div class="col-md-4 col-sm-4">
-        <?php  foreach ($arrayOne as $subcat) {  ?>
-            <div class="item subcat-category">
-                <a href="<?= $subcat->getUrl();?>" title="" class="link-sub">
-                    <img src="<?= $subcat->getImageUrl(); ?>" alt="">
-                </a>
-                <div class="box-text-sub">        
+        <div class="row" id="section-pr">
+            <div class="col-md-4 col-sm-4">
+                <?php foreach ($arrayOne as $subCat) { ?>
+                    <div class="item subcat-category">
+                        <a href="<?= $subCat->getUrl(); ?>" title="" class="link-sub">
+                            <img src="<?= $subCat->getImageUrl(); ?>" alt="">
+                        </a>
+                        <div class="box-text-sub">        
                     <span class="subcat-title">
-                        <a href="<?= $subcat->getUrl();?>" title=""><?= $subcat->getName(); ?></a>
-                        <a href="<?= $subcat->getUrl();?>" title="" class="read-more">Read More</a>
+                        <a href="<?= $subCat->getUrl(); ?>" title=""><?= $subCat->getName(); ?></a>
+                        <a href="<?= $subCat->getUrl(); ?>" title="" class="read-more">Read More</a>
                     </span>
-                </div>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
-            <?php } ?>  
-        </div>
-        <div class="col-md-4 col-sm-4">
-        <?php  foreach ($arrayTow as $subcat) {  ?>
-            <div class="item subcat-category">
-                <a href="<?= $subcat->getUrl();?>" title="" class="link-sub">
-                    <img src="<?= $subcat->getImageUrl(); ?>" alt="">
-                </a>
-                <div class="box-text-sub">        
+            <div class="col-md-4 col-sm-4">
+                <?php foreach ($arrayTwo as $subCat) { ?>
+                    <div class="item subcat-category">
+                        <a href="<?= $subCat->getUrl(); ?>" title="" class="link-sub">
+                            <img src="<?= $subCat->getImageUrl(); ?>" alt="">
+                        </a>
+                        <div class="box-text-sub">        
                     <span class="subcat-title">
-                        <a href="<?= $subcat->getUrl();?>" title=""><?= $subcat->getName(); ?></a>
-                        <a href="<?= $subcat->getUrl();?>" title="" class="read-more">Read More</a>
+                        <a href="<?= $subCat->getUrl(); ?>" title=""><?= $subCat->getName(); ?></a>
+                        <a href="<?= $subCat->getUrl(); ?>" title="" class="read-more">Read More</a>
                     </span>
-                </div>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
-            <?php } ?>  
-        </div>
-        <div class="col-md-4 col-sm-4">
-        <?php  foreach ($arrayThe as $subcat) {  ?>
-            <div class="item subcat-category">
-                <a href="<?= $subcat->getUrl();?>" title="" class="link-sub">
-                    <img src="<?= $subcat->getImageUrl(); ?>" alt="">
-                </a>
-                <div class="box-text-sub">        
+            <div class="col-md-4 col-sm-4">
+                <?php foreach ($arrayThree as $subCat) { ?>
+                    <div class="item subcat-category">
+                        <a href="<?= $subCat->getUrl(); ?>" title="" class="link-sub">
+                            <img src="<?= $subCat->getImageUrl(); ?>" alt="">
+                        </a>
+                        <div class="box-text-sub">        
                     <span class="subcat-title">
-                        <a href="<?= $subcat->getUrl();?>" title=""><?= $subcat->getName(); ?></a>
-                        <a href="<?= $subcat->getUrl();?>" title="" class="read-more">Read More</a>
+                        <a href="<?= $subCat->getUrl(); ?>" title=""><?= $subCat->getName(); ?></a>
+                        <a href="<?= $subCat->getUrl(); ?>" title="" class="read-more">Read More</a>
                     </span>
-                </div>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
-            <?php } ?>  
         </div>
-    </div> 
-</div>
-<div id="new-product">
-    <p class="text-first">NEW PRODUCTS</p>
-    <hr class="lane-decoration">
-    <div class="row" id="section-new">
-<?php 
-    $productCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
-    $collection = $productCollection->create()
-        ->addAttributeToSelect('*')
-        ->addFieldToFilter("status", "1")
-        ->addAttributeToFilter('visibility', array("neq" => "1"))
-        ->setOrder('created_at', 'DESC')
-        ->setPageSize(8) // Limit product
-        ->load();
+    </div>
 
-    foreach ($collection as $product){ ?>
 
-        <div class="col-md-3 col-sm-6 custom-resize">
-            <a href="<?= $product->getProductUrl()?>">
-                <img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>">
-            </a>
-            <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
-            <?php $specialPrice = $product->getSpecialPrice(); 
-                if(!is_null($specialPrice)){?>
-                    <span class="price-single"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
-                    <span class="special_price"><a href="<?= $product->getProductUrl()?>"><?= "$".number_format($product->getSpecialPrice(), 2);?></a></span>
-                <?php }
-                else{ ?>
-                    <span class="single-price"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
+    <div id="new-product">
+        <p class="text-first">NEW PRODUCTS</p>
+        <hr class="lane-decoration">
+        <div class="row" id="section-new">
+            <?php
+            $productCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+            $collection = $productCollection->create()
+                ->addAttributeToSelect('*')
+                ->addFieldToFilter("status", "1")
+                ->addAttributeToFilter('visibility', ["neq" => "1"])
+                ->setOrder('created_at', 'desc')
+                ->setPageSize(8)// Limit product
+                ->load();
+            ?>
+
+            <?php foreach ($collection as $product) {
+                $url = $product->getProductUrl();
+                $name = $product->getName();
+                ?>
+
+                <div class="col-md-3 col-sm-6 custom-resize">
+                    <a href="<?= $url ?>">
+                        <img src="<?= $mediaUrl . "catalog/product" . $product['image'] ?>" alt="<?= $name ?>">
+                    </a>
+                    <h4><a href="<?= $url ?>"><?= $name ?></a></h4>
+
+                    <?php
+                    $hasSpecialPrice = false;
+
+                    if ($product->getTypeId() == 'configurable') {
+                        $tmpProduct = $product->getTypeInstance()->getUsedProducts($product);
+                        foreach($tmpProduct as $item) {
+                            if ($item) $tmpProduct = $item;
+                            break;
+                        }
+                    } else $tmpProduct = $product;
+
+                    $singlePrice = $tmpProduct->getPrice();
+                    $specialPrice = $tmpProduct->getSpecialPrice();
+                    if (!is_null($specialPrice)) $hasSpecialPrice = true;
+                    $singlePrice = "$" . number_format($singlePrice, 2);
+                    $specialPrice = "$" . number_format($specialPrice, 2);
+                    ?>
+
+                    <?php if ($hasSpecialPrice) { ?>
+                        <span class="price-single">
+                            <a href="<?= $url  ?>"><?= $singlePrice ?></a>
+                        </span>
+                        <span class="special_price">
+                            <a href="<?= $url  ?>"><?= $specialPrice ?></a>
+                        </span>
+                    <?php } else { ?>
+                        <span class="single-price">
+                            <a href="<?= $url  ?>"><?= $singlePrice ?></a>
+                        </span>
+                    <?php } ?>
+
+                </div>
+
             <?php } ?>
-        </div>   
+        </div>
+    </div>
 
+
+
+    <div id="special-product">
+        <div class="top-best">
+            <div class="div-box">
+                <span class="text-top change-color">TOP</span>
+            </div>
+            <div class="div-box">
+                <span class="text-best">BEST</span>
+            </div>
+        </div>
+        <?php
+        $topProductCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+        $topCate = $topProductCollection->create()
+            ->addAttributeToSelect('*')
+            ->addFieldToFilter("status", "1")
+            ->addFieldToFilter("top_product", "1")
+            ->addFieldToFilter("type_id", array('neq' => 'virtual'))
+            ->setOrder('created_at', 'DESC')
+            ->setPageSize(4)// Limit product
+            ->load();
+        ?>
+        <?php
+        $bestProductCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+        $bestCate = $bestProductCollection->create()
+            ->addAttributeToSelect('*')
+            ->addFieldToFilter("status", "1")
+            ->addFieldToFilter("best_product", "1")
+            ->addFieldToFilter("type_id", array('neq' => 'virtual'))
+            ->setOrder('created_at', 'DESC')
+            ->setPageSize(4)// Limit product
+            ->load();
+        ?>
+
+        <div class="row section-top open">
+            <?php foreach ($topCate as $product) { ?>
+                <div class="col-md-3 col-sm-6 custom-resize">
+                    <div class="box-img">
+                        <a href="<?= $product->getProductUrl() ?>">
+                            <img src="<?= $mediaUrl . "catalog/product" . $product['image'] ?>"
+                                 alt="<?= $product->getName() ?>">
+                        </a>
+                    </div>
+                    <h4><a href="<?= $product->getProductUrl() ?>"><?= $product->getName() ?></a></h4>
+                    <?php $specialPrice = $product->getSpecialPrice();
+                    if (!is_null($specialPrice)) {
+                        ?>
+                        <span class="price-single"><a
+                                href="<?= $product->getProductUrl() ?>"><?= "$" . number_format($product->getPrice(), 2); ?></a></span>
+                        <span class="special_price"><a
+                                href="<?= $product->getProductUrl() ?>"><?= "$" . number_format($product->getSpecialPrice(), 2); ?></a></span>
+                    <?php } else { ?>
+                        <span class="single-price"><a
+                                href="<?= $product->getProductUrl() ?>"><?= "$" . number_format($product->getPrice(), 2); ?></a></span>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+        </div>
+        <div class="row section-best">
+            <?php foreach ($bestCate as $product) { ?>
+                <div class="col-md-3 col-sm-6 custom-resize">
+                    <a href="<?= $product->getProductUrl() ?>"><img
+                            src="<?= $mediaUrl . "catalog/product" . $product['image'] ?>"
+                            alt="<?= $product->getName() ?>"></a>
+                    <h4><a href="<?= $product->getProductUrl() ?>"><?= $product->getName() ?></a></h4>
+                    <?php $specialPrice = $product->getSpecialPrice();
+                    if (!is_null($specialPrice)) {
+                        ?>
+                        <span class="price-single"><a
+                                href="<?= $product->getProductUrl() ?>"><?= "$" . number_format($product->getPrice(), 2); ?></a></span>
+                        <span class="special_price"><a
+                                href="<?= $product->getProductUrl() ?>"><?= "$" . number_format($product->getSpecialPrice(), 2); ?></a></span>
+                    <?php } else { ?>
+                        <span class="single-price"><a
+                                href="<?= $product->getProductUrl() ?>"><?= "$" . number_format($product->getPrice(), 2); ?></a></span>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+
+
+
+    <div id="section-sale">
+        <p class="text-first">SALE</p>
+        <hr class="lane-decoration">
+    </div>
+    <?php if (isset($_sub2) && count($_sub2) > 0) { ?>
+        <?php $size = count($_sub2); ?>
+        <div class="clearfix"></div>
+        <div id="bannerHS" class="carousel slide" data-ride="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <?php $i = 1; ?>
+                <?php foreach ($_sub2 as $bn) { ?>
+                    <div class="item <?= ($i == 1) ? 'active' : '' ?>">
+                        <img src="<?= $mediaUrl . $bn['image'] ?>"/>
+                    </div>
+                    <?php $i++; ?>
+                <?php } ?>
+            </div>
+            <!-- Controls -->
+            <a href="#bannerHS" role="button" data-slide="prev">
+                <div class="prevButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+            </a>
+            <a href="#bannerHS" role="button" data-slide="next">
+                <div class="nextButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
+            </a>
+            <!-- Indicators -->
+            <ol class="carousel-indicators hidden">
+                <?php $i = 0 ?>
+                <?php foreach ($_sub2 as $bn) { ?>
+                    <li data-target="#bannerHS" data-slide-to="<?= $i ?>" class="<?= ($i == 0) ? 'active' : '' ?>"></li>
+                    <?php $i++; ?>
+                <?php } ?>
+            </ol>
+        </div>
+        <div class="clearfix pad40"></div>
     <?php } ?>
-   </div> 
-</div>
-<div id="special-product">
-    <div class="top-best">
-        <div class="div-box">
-            <span class="text-top change-color">TOP</span>
-        </div>
-        <div class="div-box">
-            <span class="text-best">BEST</span>
-        </div>
-    </div>
     <?php
-    $topproductCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
-    $topCate = $topproductCollection->create()
-        ->addAttributeToSelect('*')
-        ->addFieldToFilter("status", "1")
-        ->addFieldToFilter("top_product", "1")
-        ->addFieldToFilter("type_id", array('neq' => 'virtual'))
-        ->setOrder('created_at', 'DESC')
-        ->setPageSize(4) // Limit product
-        ->load();
-    ?>
-    <?php
-    $bestproductCollection = $_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
-    $bestCate = $bestproductCollection->create()
-        ->addAttributeToSelect('*')
-        ->addFieldToFilter("status", "1")
-        ->addFieldToFilter("best_product", "1")
-        ->addFieldToFilter("type_id", array('neq' => 'virtual'))
-        ->setOrder('created_at', 'DESC')
-        ->setPageSize(4) // Limit product
-        ->load();
-    ?>
-
-    <div class="row section-top open">
-        <?php  foreach ($topCate as $product){ ?>
-        <div class="col-md-3 col-sm-6 custom-resize">
-        <div class="box-img">
-            <a href="<?= $product->getProductUrl()?>">
-                <img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>">
-            </a>
-        </div>
-            <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
-            <?php $specialPrice = $product->getSpecialPrice(); 
-                if(!is_null($specialPrice)){?>
-                    <span class="price-single"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
-                    <span class="special_price"><a href="<?= $product->getProductUrl()?>"><?= "$".number_format($product->getSpecialPrice(), 2);?></a></span>
-                <?php }
-                else{ ?>
-                    <span class="single-price"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
-            <?php } ?>
-        </div>
-       <?php } ?>
-    </div>
-    <div class="row section-best">
-        <?php  foreach ($bestCate as $product){ ?>
-            <div class="col-md-3 col-sm-6 custom-resize">
-                <a href="<?= $product->getProductUrl()?>"><img src="<?= $mediaUrl ."catalog/product". $product['image'] ?>" alt="<?= $product->getName()?>"></a>
-                <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
-                <?php $specialPrice = $product->getSpecialPrice(); 
-                if(!is_null($specialPrice)){?>
-                    <span class="price-single"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
-                    <span class="special_price"><a href="<?= $product->getProductUrl()?>"><?= "$".number_format($product->getSpecialPrice(), 2);?></a></span>
-                <?php }
-                else{ ?>
-                    <span class="single-price"><a href="<?= $product->getProductUrl()?>"><?=  "$".number_format($product->getPrice(), 2); ?></a></span>
-            <?php } ?>
-            </div>
-        <?php } ?>
-    </div> 
-</div>
-<div id="section-sale">
-    <p class="text-first">SALE</p>
-    <hr class="lane-decoration">
-</div>
-<?php if (isset($_sub2) && count($_sub2) > 0) { ?>
-    <?php $size = count($_sub2); ?>
-    <div class="clearfix"></div>
-    <div id="bannerHS" class="carousel slide" data-ride="carousel">
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
-            <?php $i =1; ?>
-            <?php foreach($_sub2 as $bn) { ?>
-                <div class="item <?= ($i == 1) ? 'active':'' ?>">
-                    <img src="<?= $mediaUrl . $bn['image']?>" />
-                </div>
-                <?php $i++; ?>
-            <?php } ?>
-        </div>
-        <!-- Controls -->
-        <a href="#bannerHS" role="button" data-slide="prev">
-            <div class="prevButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
-        </a>
-        <a href="#bannerHS" role="button" data-slide="next">
-            <div class="nextButtonWrap btHomeSlider" aria-hidden="true"><span></span></div>
-        </a>
-        <!-- Indicators -->
-        <ol class="carousel-indicators hidden">
-            <?php $i =0 ?>
-            <?php foreach($_sub2 as $bn) { ?>
-                <li data-target="#bannerHS" data-slide-to="<?= $i ?>" class="<?= ($i == 0) ? 'active':'' ?>"></li>
-                <?php $i++; ?>
-            <?php } ?>
-        </ol>
-    </div>
-    <div class="clearfix pad40"></div>
-<?php } ?>
-<?php
     $koreanCat = $_objectManager->create('Magefan\Blog\Model\Category')->load('korean');
     $korean = $_objectManager->create('Magefan\Blog\Model\ResourceModel\Post\Collection')
         ->addActiveFilter()->addCategoryFilter($koreanCat)->setOrder('creation_time', 'DESC')->setPageSize(1);
@@ -307,38 +333,41 @@
     $vietnamCat = $_objectManager->create('Magefan\Blog\Model\Category')->load('vietnamese');
     $vietnam = $_objectManager->create('Magefan\Blog\Model\ResourceModel\Post\Collection')
         ->addActiveFilter()->addCategoryFilter($vietnamCat)->setOrder('creation_time', 'DESC')->setPageSize(1);
-?>
+    ?>
+
+
+
     <div id="promotion-product">
         <p class="text-first">NEW & PROMOTIONS</strong></p>
         <hr class="lane-decoration">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 style-padding">
-                <div class="demo-3" id ="box-one"> 
-                    <a href="<?= $baseUrl.'blog/category/korean'?>" title="">
-                    <div class="box-1">
-                    <?php foreach ($korean as $proItem) { ?>
-                        <img src="<?= $proItem->getFeaturedImage() ?>">
-                    <?php } ?>
-                        <div class="details"></div>
-                        <span class="category-content"><?= $koreanCat->getTitle() ?></span>
-                     </div>
+                <div class="demo-3" id="box-one">
+                    <a href="<?= $baseUrl . 'blog/category/korean' ?>" title="">
+                        <div class="box-1">
+                            <?php foreach ($korean as $proItem) { ?>
+                                <img src="<?= $proItem->getFeaturedImage() ?>">
+                            <?php } ?>
+                            <div class="details"></div>
+                            <span class="category-content"><?= $koreanCat->getTitle() ?></span>
+                        </div>
                     </a>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 style-padding">
-                <div class="demo-3" id ="box-two"> 
-                    <a href="<?= $baseUrl.'blog/category/chinese'?>" title="">
-                    <?php foreach ($chinese as $proItem) { ?>
-                        <img src="<?= $proItem->getFeaturedImage() ?>">
-                    <?php } ?>
+                <div class="demo-3" id="box-two">
+                    <a href="<?= $baseUrl . 'blog/category/chinese' ?>" title="">
+                        <?php foreach ($chinese as $proItem) { ?>
+                            <img src="<?= $proItem->getFeaturedImage() ?>">
+                        <?php } ?>
                         <div class="details"></div>
                         <span class="category-content"><?= $chineseCat->getTitle() ?></span>
                     </a>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 style-padding">
-                <div class="demo-3" id ="box-three"> 
-                    <a href="<?= $baseUrl.'blog/category/vietnamese'?>" title="">
+                <div class="demo-3" id="box-three">
+                    <a href="<?= $baseUrl . 'blog/category/vietnamese' ?>" title="">
                         <?php foreach ($vietnam as $proItem) { ?>
                             <img src="<?= $proItem->getFeaturedImage() ?>">
                         <?php } ?>
@@ -352,8 +381,8 @@
 </div>
 
 <script type="text/javascript">
-    require([ 'jquery', 'jquery/ui'], function($){ 
-        $(document).ready(function($) {
+    require(['jquery', 'jquery/ui'], function ($) {
+        $(document).ready(function ($) {
             $('#special-product .text-top').click(function () {
                 $('.section-best').removeClass('open');
                 $('.section-top').addClass("open");
@@ -366,7 +395,7 @@
                 $('.text-best').addClass('change-color');
                 $('.text-top').removeClass('change-color');
             });
-        }); 
+        });
     });
 </script>
 
