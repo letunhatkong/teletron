@@ -165,10 +165,11 @@
     $collection = $productCollection->create()
         ->addAttributeToSelect('*')
         ->addFieldToFilter("status", "1")
-        ->addFieldToFilter("type_id", array('neq' => 'virtual'))
+        ->addAttributeToFilter('visibility', array("neq" => "1"))
         ->setOrder('created_at', 'DESC')
         ->setPageSize(8) // Limit product
         ->load();
+
     foreach ($collection as $product){ ?>
 
         <div class="col-md-3 col-sm-6 custom-resize">

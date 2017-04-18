@@ -23,3 +23,6 @@ LICENSE
 update
 /sqldb
 
+/vendor/*
+!/vendor/magento/
+

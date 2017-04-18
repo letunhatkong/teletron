@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="checkout_cart_item_renderers"/>
+    <update handle="checkout_shipping_price_renderer"/>
+    <body>
+      <!--   <referenceBlock name="checkout.cart.order.actions.gift_options" remove="true" />
+        <referenceBlock name="checkout.cart.summary.title" remove="true" />
+
+        <move element="checkout.cart.shipping" destination="checkout.cart.container" after="checkout.cart.form"/>
+        <move element="checkout.cart.coupon" destination="checkout.cart.container" after="checkout.cart.shipping"/>
+        <referenceContainer name="checkout.cart.totals.container" htmlTag="div" htmlClass="col-xs-12 col-sm-4" />
+        <move element="checkout.cart.totals.container" destination="checkout.cart.container" after="-" />
+        <move element="checkout.cart.methods.bottom" destination="checkout.cart.totals.container" after="-"/> -->
+    </body>
+</page>
